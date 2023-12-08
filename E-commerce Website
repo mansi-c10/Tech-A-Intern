@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOMMERCE WEBSITE</title>
+    <style>
+        /* Your CSS styles here */
+body {
+            margin: 0;
+            padding: 0;
+            background: url('https://img.freepik.com/free-photo/e-commerce-shop-online-homepage-sale-concept_53876-120965.jpg?size=626&ext=jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.8); /* Adding a semi-transparent white background for better readability */
+            color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        /* Rest of your styles... */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Shop Online</h1>
+        <button id="signInBtn">Sign In</button>
+        <button id="cartBtn">Cart</button>
+    </header>
+
+    <main>
+        <div>
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="books">Books</option>
+		<option value="grocery">Grocery</option>
+		<option value="furnitures">Furnitures</option>
+		<option value="medicine">Medicine</option>
+            </select>
+
+            <input type="text" id="searchInput" placeholder="Search products">
+
+            <button id="searchBtn">Search</button>
+        </div>
+
+        <div id="products"></div>
+    </main>
+
+    <script>
+        // Your JavaScript code here
+        document.getElementById('signInBtn').addEventListener('click', function() {
+            // Handle sign-in logic
+            alert('Sign In button clicked');
+        });
+
+        document.getElementById('cartBtn').addEventListener('click', function() {
+            // Handle cart logic
+            alert('Cart button clicked');
+        });
+
+        const products = [
+            { name: 'Laptop', category: 'electronics', price: 800 },
+            { name: 'T-shirt', category: 'clothing', price: 20 },
+            { name: 'Book', category: 'books', price: 15 },
+	    { name: 'Bread & Butter', category: 'grocery', price: 10 },
+            { name: 'Sofa Set', category: 'furnitures', price: 500 },
+            { name: 'Paracetamol', category: 'medicine', price: 7 },
+            // Add more products as needed
+        ];
+
+        function renderProducts(filterCategory, searchQuery) {
+            const productsContainer = document.getElementById('products');
+            productsContainer.innerHTML = '';
+
+            products.forEach(product => {
+                if (
+                    (filterCategory === '' || product.category === filterCategory) &&
+                    (searchQuery === '' ||
+                    product.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                ) {
+                    const productElement = document.createElement('div');
+                    productElement.classList.add('product');
+                    productElement.innerHTML = `
+                        <h3>${product.name}</h3>
+                        <p>Category: ${product.category}</p>
+                        <p>Price: $${product.price}</p>
+                        <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                    `;
+                    productsContainer.appendChild(productElement);
+                }
+            });
+        }
+
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const searchQuery = document.getElementById('searchInput').value;
+            const selectedCategory = document.getElementById('categoryFilter').value;
+            renderProducts(selectedCategory, searchQuery);
+        });
+
+        function addToCart(productName, productPrice) {
+            // Handle adding the product to the cart
+            alert(`Added ${productName} to the cart. Price: $${productPrice}`);
+        }
+
+        // Initial render
+        renderProducts('', '');
+    </script>
+</body>
+</html>
