@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://wallpapers.com/images/featured/movie-9pvmdtvz4cb0xl37.jpg');
+            background-size: cover;
+            background-position: center;
+            backdrop-filter: blur(5px); /* Add a little blur effect */
+            height: 100vh;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        header {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .dropdown-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .dropdown {
+            width: 48%;
+            background-color: rgba(255, 255, 255, 0.8); /* Adjust background opacity */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+        }
+
+        .search-btn {
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            text-decoration: none;
+            color: #333;
+            font-size: 24px;
+            background-color: #fff; /* Background color for the icons */
+            padding: 5px; /* Padding to create space around the icons */
+            border-radius: 50%; /* Make the background circular */
+            transition: background-color 0.3s ease; /* Add a smooth transition effect */
+        }
+
+        .social-icons a:hover {
+            background-color: #333; /* Change the background color on hover */
+            color: #fff; /* Change the text color on hover */
+        }
+
+        .movie-card {
+            border: 1px solid #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>RECOMMEND M4U</h1>
+        <div class="social-icons">
+            <a href="#" title="Login with Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="Login with YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" title="Login with Facebook"><i class="fab fa-facebook"></i></a>
+        </div>
+    </header>
+
+    <main>
+        <div class="dropdown-container">
+            <div class="dropdown">
+                <label for="genreDropdown">Select Genre:</label>
+                <select id="genreDropdown">
+                    <option value="select">Select Genre</option>
+                    <option value="horror">Horror</option>
+                    <option value="comedy">Comedy</option>
+                    <option value="action">Action</option>
+                    <option value="fictional">Fictional</option>
+                    <option value="sci-fi">Sci-Fi</option>
+                    <option value="romantic">Romantic</option>
+                </select>
+            </div>
+
+            <div class="dropdown">
+                <label for="actorDropdown">Top Indian Actors:</label>
+                <select id="actorDropdown">
+                    <option value="select">Select Actor</option>
+                    <option value="amitabh">Amitabh Bachchan</option>
+                    <option value="shahrukh">Shah Rukh Khan</option>
+                    <option value="aamir">Aamir Khan</option>
+                    <option value="salman">Salman Khan</option>
+                    <option value="hritvik">Hritviik Roshan</option>
+                    <option value="govinda">Govinda</option>
+                    <!-- Add more actors as needed -->
+                </select>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" placeholder="Search movies...">
+            <button id="searchBtn" class="search-btn">Search</button>
+        </div>
+
+        <!-- Display recommended movies or search results here -->
+        <div id="movies-container">
+            <!-- Movie cards will be dynamically added here -->
+        </div>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script>
+        const moviesData = [
+            { title: "BhootNath", genre: "horror", actor: "amitabh", rating: 4.5, blog: "Ultimately, the film goes off-track and into the realm of serious melodrama, and loses the audience." },
+            { title: "Chennai Express", genre: "comedy", actor: "shahrukh", rating: 3.8, blog: "The movie chugs along for most of its 2 hours and 20 minutes searching for comedy and characters in a frantically overplotted story." },
+            // Add more movies as needed
+        ];
+
+        const moviesContainer = document.getElementById('movies-container');
+
+        function renderMovies(movies) {
+            moviesContainer.innerHTML = '';
+
+            movies.forEach(movie => {
+                const movieCard = document.createElement('div');
+                movieCard.classList.add('movie-card');
+                movieCard.innerHTML = `
+                    <h3>${movie.title}</h3>
+                    <p>Genre: ${movie.genre}</p>
+                    <p>Actor: ${movie.actor}</p>
+                    <p>Rating: ${movie.rating}</p>
+                    <p>${movie.blog}</p>
+                `;
+                moviesContainer.appendChild(movieCard);
+            });
+        }
+
+        function filterMovies() {
+            const genreFilter = document.getElementById('genreDropdown').value;
+            const actorFilter = document.getElementById('actorDropdown').value;
+            const searchQuery = document.querySelector('input[type="text"]').value.toLowerCase();
+
+            const filteredMovies = moviesData.filter(movie => {
+                const genreMatch = genreFilter === 'select' || movie.genre.toLowerCase() === genreFilter.toLowerCase();
+                const actorMatch = actorFilter === 'select' || movie.actor.toLowerCase() === actorFilter.toLowerCase();
+                const titleMatch = movie.title.toLowerCase().includes(searchQuery);
+
+                return genreMatch && actorMatch && titleMatch;
+            });
+
+            renderMovies(filteredMovies);
+        }
+
+        document.getElementById('searchBtn').addEventListener('click', filterMovies);
+
+        // Initial render
+        renderMovies(moviesData);
+    </script>
+</body>
+</html>
